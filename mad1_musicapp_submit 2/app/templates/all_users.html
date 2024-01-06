@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}All Users{% endblock title %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock styles %}
+
+{% block main %}
+{% include 'navbar.html' %}
+<section>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid p-5 col-xxl-12">
+            <h1 style="color: black;" href="#"><strong>All Users</strong></h1>
+            <div>
+                <div>
+                    <form class="d-flex">
+                        <input class="form-control" type="text" placeholder="🔍Search Users" id="search-users">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+</section>
+
+{% for user in users.keys() %}
+{% if users[user] %}
+<section>
+    <div class="container-fluid">
+        <div class="row mt-4 cover-main p-5 m-3">
+            <div class="d-flex  justify-content-between col-xxl-12">
+                <div class="m-2 d-flex text-align-center">
+                    <h2>{{ user.title() }}</h2>
+                </div>
+            </div>
+
+
+            <div class="scroll-main">
+                {% for u in users[user] %}
+                <div class="cover-main col-xxl-12 mt-4 d-flex justify-content-between all-users">
+                    <div class="m-3 col-xxl-3">
+                        <h4>{{ u['username'].title() }}</h4>
+                    </div>
+                    <div class="m-2 col-xxl-3 d-flex justify-content-around">
+                        <a class="button" href="{{ url_for('delete_user', userid=u['id']) }}">Delete</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endfor %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='admin_search.js') }}"></script>
+{% endblock script %}
+{% endblock main %}

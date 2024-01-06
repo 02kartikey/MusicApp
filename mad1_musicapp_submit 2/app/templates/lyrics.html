@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Lyrics{% endblock title %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock styles %}
+
+{% block main %}
+
+    {% include 'navbar.html' %}
+    <!-- ---description start--- -->
+    <div class="container">
+        <div class="row mt-5">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h1>{{ song['name'] }}</h1>
+                    <p>{{ song['artist'] }}<span>| {{ song['date_created'] }} | {{ song['genre'] }}</span></p>
+                </div>
+                <div>
+                {% if session['user']['role'] == 'user' %}
+                    <div class="d-flex justify-content-between">
+                        <a href="/song/like/{{ song['id'] }}"><button type="button" class="btn btn-light fs-5 m-1">{% if song['has_liked'] == True %}<img width="32" height="32" src="https://img.icons8.com/color/32/filled-like.png" alt="filled-like"/>{% else %}<img width="32" height="32" src="https://img.icons8.com/fluency-systems-regular/32/like--v1.png" />{% endif %}</button></a>
+                        <div class="btn-toolbar m-1" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group me-2" role="group" aria-label="First group">
+                                {% for i in range(1, 6) %}
+                                    {% if i <= song['rating'] %}
+                                        <a href="/song/rate/{{ song['id'] }}/{{ i }}"><button type="button" class="btn btn-light"><img width="32" height="32" src="https://img.icons8.com/fluency/32/star--v1.png"/></button></a>
+                                    {% else %}
+                                        <a href="/song/rate/{{ song['id'] }}/{{ i }}"><button type="button" class="btn btn-light"><img width="28" height="28" src="https://img.icons8.com/ios/28/star--v1.png"/></button></a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <p>Average Rating: {{ song['avg_rating'] }}</p>
+                        {% if session['user']['role'] == 'creator' %}
+                            <p>Total Likes: {{ song['total_likes'] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ---description end--- -->
+    <!-- ---lyrics start--- -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="d-flex justify-content-center text-center">
+                <div class="col-6 mt-3">
+                    <p class="fs-5">{{ song['lyrics'] }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ---lyrics end--- -->
+
+{% endblock main %}

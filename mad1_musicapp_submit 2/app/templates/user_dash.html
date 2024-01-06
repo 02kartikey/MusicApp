@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard{% endblock title %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock styles %}
+
+{% block main %}
+
+{% include 'navbar.html' %}
+<!-- ---recommandations start--- -->
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h3>Top Rated Tracks 🌟</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ---list start--- -->
+<div class="container-fluid">
+    <div class="row main-scroll d-flex">
+        {% for song in songs['top_rated'] %}
+        <div class="card card-cover m-4" style="width: 12rem; height: 9rem;">
+            <div class="card-body d-flex align-items-center">
+                <div class="col-xxl-12">
+                    <div>
+                        <h4 class="card-title text-center">{{ song['name'] }}</h4>
+                        <p class="card-text text-center">Avg rating: {{ song['avg_rating'] }}/5</p>
+                    </div>
+                    <div class="">
+                        <a href="{{ url_for('lyrics', songid=song['id']) }}"
+                            class="btn btn-dark d-flex justify-content-center">Read Lyrics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- ---playlist start--- -->
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h3>Your Playlists 🎶</h3>
+            </div>
+            <div class="m-1 col-2">
+                <button type="button" class="btn btn-dark col-11 btn-lg"><a href="{{ url_for('playlist_create') }}"
+                        class="text-light">Create New Playlist</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row main-scroll d-flex">
+        {% for playlist in songs['playlists'] %}
+        <div class="card card-cover m-4" style="width: 12rem; height: 9rem;">
+            <div class="card-body d-flex align-items-center">
+                <div class="col-xxl-12">
+                    <div>
+                        <h4 class="card-title text-center">{{ playlist['name'] }}</h4>
+                    </div>
+                    <div class="">
+                        <a href="{{ url_for('playlist_info', playlistid=playlist['id']) }}"
+                            class="btn btn-dark d-flex justify-content-center">View Tracks</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- ---playlist end--- -->
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h3>Your Liked Songs 💖</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row main-scroll d-flex">
+        {% for song in songs['liked'] %}
+        <div class="card card-cover m-4" style="width: 12rem; height: 9rem;">
+            <div class="card-body d-flex align-items-center">
+                <div class="col-xxl-12">
+                    <div>
+                        <h4 class="card-title text-center">{{ song['name'] }}</h4>
+                    </div>
+                    <div class="">
+                        <a href="{{ url_for('lyrics', songid=song['id']) }}"
+                            class="btn btn-dark d-flex justify-content-center">Read Lyrics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h3>All Albums 🎵</h3>
+            </div>
+            <div class="m-1 col-2">
+                <input class="form-control me-2" type="text" id="album_search" placeholder="🔎 Search Albums">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row main-scroll d-flex">
+        {% for album in songs['albums'] %}
+        <div class="card card-cover m-4 all-albums" style="width: 12rem; height: 9rem;">
+            <div class="card-body d-flex align-items-center">
+                <div class="col-xxl-12">
+                    <div>
+                        <h4 class="card-title text-center">{{ album['name'] }}</h4>
+                    </div>
+                    <div class="">
+                        <a href="{{ url_for('album_info', albumid=album['id']) }}"
+                            class="btn btn-dark d-flex justify-content-center">View Album</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ---genre start--- -->
+{% for genre in songs['genre'].keys() %}
+{% if songs['genre'][genre] %}
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="mt-2">
+            <h3>{{ genre.title() }}</h3>
+        </div>
+    </div>
+</div>
+<!-- ---list start--- -->
+<div class="container-fluid">
+    <div class="row main-scroll d-flex">
+        {% for song in songs['genre'][genre] %}
+        <div class="card card-cover m-4" style="width: 12rem; height: 9rem;">
+            <div class="card-body d-flex align-items-center">
+                <div class="col-xxl-12">
+                    <div>
+                        <h4 class="card-title text-center">{{ song['name'] }}</h4>
+                    </div>
+                    <div class="">
+                        <a href="{{ url_for('lyrics', songid=song['id']) }}"
+                            class="btn btn-dark d-flex justify-content-center">Read Lyrics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h3>All Songs</h3>
+            </div>
+            <div class="m-1 col-2">
+                <input class="form-control me-2" type="text" id="search" placeholder="🔎 Search Songs">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row main-scroll d-flex">
+        {% for genre_songs in songs['genre'].values() %}
+        {% for song in genre_songs %}
+        <div class="card card-cover m-4 all-songs" style="width: 12rem; height: 9rem;">
+            <div class="card-body d-flex align-items-center">
+                <div class="col-xxl-12">
+                    <div>
+                        <h4 class="card-title text-center">{{ song['name'] }}</h4>
+                    </div>
+                    <div class="">
+                        <a href="{{ url_for('lyrics', songid=song['id']) }}"
+                            class="btn btn-dark d-flex justify-content-center">Read Lyrics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% block script %}
+<script src="{{ url_for('static', filename='all_songs_search.js') }}"></script>
+{% endblock script %}
+
+{% endblock main %}

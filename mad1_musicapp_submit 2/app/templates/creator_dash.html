@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Creator Dashboard{% endblock title %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock styles %}
+
+{% block main %}
+
+{% include 'navbar.html' %}
+<div class="m-3">
+    <h2>DASHBOARD</h2>
+</div>
+<div class="container mt-2 col-xxl-10">
+    <div class="row">
+        <div class="dash-parent row d-flex justify-content-between mt-2">
+
+            <div class="card" style="width:17rem; height: 10rem;">
+                <div class="card-body d-flex align-items-center">
+                    <div class="col-xxl-12">
+                        <h5 class="card-title text-center">Total Songs Uploaded</h5>
+                        <p class="card-text text-center fs-1">{{ data['songs']|length }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width:17rem; height: 10rem;">
+                <div class="card-body d-flex align-items-center">
+                    <div class="col-xxl-12">
+                        <h5 class="card-title text-center">Average Ratings</h5>
+                        <p class="card-text text-center fs-1">{% if data['avg_rating'] %}{{ data['avg_rating'] }}{% else %}N/A{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width:17rem; height: 10rem;">
+                <div class="card-body d-flex align-items-center">
+                    <div class="col-xxl-12">
+                        <h5 class="card-title text-center">Total Albums</h5>
+                        <p class="card-text text-center fs-1">{{ data['albums']|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h2>YOUR UPLOADS</h2>
+            </div>
+            <div class="m-1">
+                <a href="{{ url_for('upload_song') }}"><button type="button" class="btn btn-dark btn-lg">Song Upload</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---music-scroll-start--- -->
+<div class="container">
+    <div class="row ">
+
+        <div class="scroll-main">
+            {% for song in data['songs'] %}
+            <div class="cover-main col-xxl-12 mt-4 d-flex justify-content-between">
+                <div class="m-3 col-xxl-3">
+                    <h4>{{ song['name'] }}</h4>
+                </div>
+                <div class="m-2 col-xxl-6 d-flex justify-content-between">
+                    <a class="button" href="{{ url_for('lyrics', songid=song['id']) }}">View Lyrics</a>
+                    <a class="button" href="{{ url_for('edit_song', songid=song['id']) }}">Edit</a>
+                    <a class="button" href="{{ url_for('delete_song', songid=song['id']) }}">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- ---music-scroll-end--- -->
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="d-flex justify-content-between col-xxl-12">
+            <div class="m-2 d-flex text-align-center">
+                <h2>YOUR ALBUMS</h2>
+            </div>
+            <div class="m-1">
+                <a href="{{ url_for('album_create') }}"><button type="button" class="btn btn-dark btn-lg">Create Album</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ---music-scroll-start--- -->
+<div class="container">
+    <div class="row ">
+
+        <div class="scroll-main">
+            {% for album in data['albums'] %}
+            <div class="cover-main col-xxl-12 mt-4 d-flex justify-content-between">
+                <div class="m-3 col-xxl-3">
+                    <h4>{{ album['name'] }}</h4>
+                </div>
+                <div class="m-2 col-xxl-6 d-flex justify-content-between">
+                    <a class="button" href="{{ url_for('album_info', albumid=album['id']) }}">View Album</a>
+                    <a class="button" href="{{ url_for('album_edit', albumid=album['id']) }}">Edit</a>
+                    <a class="button" href="{{ url_for('album_delete', albumid=album['id']) }}">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- ---music-scroll-end--- -->
+
+{% endblock main %}

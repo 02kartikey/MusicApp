@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Login Page{% endblock title %}
+
+{% block main %}
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Music App</a>
+        <div>
+            <div>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/login">Login</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/signup">Signup</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/login">Admin Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="position-absolute top-50 start-50 translate-middle col-12">
+    <div class="d-flex justify-content-center">
+        <h3>Admin Login</h3>
+    </div>
+
+    <div class="d-flex justify-content-center col-12">
+        <form action="{{ url_for('admin_login') }}" method="post" enctype="multipart/form-data" class="login-form col-6">
+            <div class="mb-3">
+                <label class="label" for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="mb-3">
+                <label class="label" for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="mb-3 col-4">
+                    <button type="submit" class="form-control btn btn-dark rounded submit">Login as Admin</button>
+                </div>
+            </div>
+            <p class="text-center">Not an admin? <a class="link-dark" href="{{ url_for('login_page') }}">Login Here</a></p>
+        </form>
+    </div>
+</div>
+{% endblock main %}

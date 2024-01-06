@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Song{% endblock title %}
+
+{% block styles %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock styles %}
+
+{% block main %}
+
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div class="row">
+            <div>
+                {% if song == False %}
+                    <h1 class="text-center m-2">UPLOAD NEW SONG</h1>
+                {% else %}
+                    <h1 class="text-center m-2">UPDATE SONG</h1>
+                {% endif %}
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="col-7 mt-2">
+                    <form action="{% if song == False %}/song{% else %}/song/edit/{{ song['id'] }}{% endif %}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="title" class="form-label fs-4">Title</label>
+                            <input type="text" class="form-control form" id="title" name="title" value="{% if song %}{{ song['name'] }}{% endif %}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration" class="form-label fs-4">Duration</label>
+                            <input type="text" class="form-control form" id="duration" name="duration" value="{% if song %}{{ song['duration'] }}{% endif %}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genre" class="form-label fs-4">Genre</label>
+                            <select class="form-control form" id="genre" name="genre" required>
+                                {% if song %}
+                                    <option value="{{ song['genre'] }}">{{ song['genre'].title() }}</option>
+                                {% endif %}
+                                <option value="">--SELECT--</option>
+                                {% for genre in genres %}
+                                <option value="{{ genre }}">{{ genre.title() }}</option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lyrics" class="form-label fs-4">Lyrics</label>
+                            <textarea class="form-control form" id="lyrics" rows="3" name="lyrics" required>{% if song %}{{ song['lyrics'] }}{% endif %}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-center m-4">
+                            <button type="submit" class="upl-btn btn-dark">SUBMIT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main %}
